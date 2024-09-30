@@ -1,0 +1,90 @@
+Steps to be followed for VIC-AMBHAS
+
+General:
+
+sudo apt-get install gcc
+sudo apt-get install g++
+sudo apt-get install gdc
+sudo apt-get install gfortran
+sudo apt-get install tcl-dev
+sudo apt-get install tk-dev
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install build-essential
+sudo apt-get install gcc -V
+sudo apt-get install make -V
+sudo apt-get install git
+sudo apt install exuberant-ctags
+sudo apt install mpich
+sudo apt-get install libxml2-dev
+
+PATH and LD_LIBRARY_PATH
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+
+1. Installation of OpenMPI:
+
+	1. Go to http://www.open-mpi.org and download the latest .tar.gz package 
+	2. Create a directory to install OpenMPI and go into it 
+	$ mkdir $HOME/openmpi 
+	$ cd $HOME/openmpi 
+
+	3. Copy the .tar.gz file into this directory: 
+	$ cp $HOME/Downloads/openmpi-3.1.5.tar.gz 
+	$ HOME/openmpi 
+
+	4. Extract the package and go into the extracted directory: 
+	$ tar -xzvf openmpi-3.1.5.tar.gz 
+	$ cd openmpi-3.1.5/ 
+
+	5. Configure and compile (this step may take about 5-10 minutes): 
+	$ ./configure --prefix=$HOME/openmpi 
+	$ make all 
+
+	6. Finally install using the following command: 
+	$ make install 
+
+	7. Add OpenMPI to your PATH and LD_LIBRARY_PATH environment variable. (At the end of this document)
+
+2. Installation of NetCDF (Prior installation of zlib and hdf5 required)
+(https://www.youtube.com/watch?v=i6YShfyQ2R0&t=20s)
+(https://www.unidata.ucar.edu/software/netcdf/docs/getting_and_building_netcdf.html)
+
+zlib:
+	$ # Build and install zlib
+	$ ZDIR=/usr/local
+	$ ./configure --prefix=${ZDIR}
+	$ make check
+	$ make install   # or sudo make install, if root permissions 				
+hdf5:
+
+	$ # Build and install HDF5
+	$ H5DIR=/usr/local
+	$ ./configure --with-zlib=${ZDIR} --prefix=${H5DIR} --enable-hl
+	$ make check
+	$ make install   # or sudo make install, if root permissions 
+
+netcdf: (might need to install curl: $sudo apt install curl)
+
+	$ # Build and install netCDF-4
+	$ NCDIR=/usr/local
+	$ CPPFLAGS='-I${H5DIR}/include -I${ZDIR}/include' LDFLAGS='-L${H5DIR}/lib -L${ZDIR}/lib' ./configure --prefix=${NCDIR}
+	$ make check
+	$ make install  # or sudo make install
+
+
+Building image version of VIC-AMBHAS:
+	1. $gedit ~/VIC_AMBHAS_for_Shubham/VIC_AMBHAS/VIC/vic/drivers/image
+	2. change line 55 as below and save and exit:
+		MPICC = ~/openmpi/bin/mpicc 
+	3. cd ~/VIC_AMBHAS_for_Shubham/VIC_AMBHAS/VIC/vic/drivers/image
+	4. make full
+
+######## Adding Paths:
+(vic) shubham@shubham:~/ET_Project/VIC_Model/input_VIC_IRR/default/run$ which mpicc
+/usr/bin/mpicc
+(vic) shubham@shubham:~/ET_Project/VIC_Model/input_VIC_IRR/default/run$ export PATH=$PATH:/usr/bin/mpicc:/home/shubham/anaconda3/lib
+(vic) shubham@shubham:~/ET_Project/VIC_Model/input_VIC_IRR/default/run$ echo $PATH
+/home/shubham/anaconda3/envs/vic/bin:/home/shubham/anaconda3/condabin:/home/shubham/miniconda/bin:/home/shubham/bin:/home/shubham/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/bin/mpicc
+(vic) shubham@shubham:~/ET_Project/VIC_Model/input_VIC_IRR/default/run$ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/bin/mpicc
+

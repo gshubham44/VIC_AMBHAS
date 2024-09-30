@@ -1,0 +1,39 @@
+1. Go to: /home/shubham/VIC_AMBHAS_2/Kabini/run/
+2. In file PhiGoTest.txt go to line 67:
+	
+	PARAMETERS     /home/shubham/VIC_AMBHAS_2/Kabini/run/Kabini_param_calib4.nc
+	
+	change the last digit, in previous case from 4 to next parameter file like 5 or 6 for example:
+	
+	PARAMETERS     /home/shubham/VIC_AMBHAS_2/Kabini/run/Kabini_param_calib5.nc
+3. Go to line 80:
+	OUTFILE     fluxes_soil_calib4.Kabini
+	
+	change to : 
+	OUTFILE     fluxes_soil_calib5.Kabini
+   
+	Save the file and close it.
+
+4. Check folders 'AMBHAS_OUT' and 'results', they should be empty. If there are outputs from previous run, then follow the steps mentioned at the end to save the results and then delete all the contents of 'AMBHAS_OUT' and 'results'.
+
+5. Right click in open space in folder run and click on 'open in terminal'. Once terminal is open, copy paste following command
+
+/home/shubham/VIC_AMBHAS_2/VIC_AMBHAS/VIC/vic/drivers/image/vic_image.exe -g /home/shubham/VIC_AMBHAS_2/Kabini/run/PhiGoTest.txt
+
+Copy is same as windows just select and Ctrl+C. To paste in terminal either use right click and paste or use shortcut Ctrl+Shift+V.
+
+Press Enter
+
+6. Function will start running.
+
+
+After simulation has stopped:
+
+1. At the end of the simulation you will see a VIC table showing some time taken etc., it means model simulation is complete.
+2. Go to /home/shubham/VIC_AMBHAS_2/Kabini/Calib/
+3. Create a new folder with name: 'Calib_5' where 5 corresponds to the parameter file.
+4. Copy 'AMBHAS_OUT' and 'results' folder to 'Calib_5'.
+5. Go back to folder Kabini and delete all the contents of folders 'AMBHAS_OUT' and 'results'.
+
+
+Repeat for next parameter set.
